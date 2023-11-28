@@ -1,0 +1,62 @@
+.container{
+    margin: 0 auto;
+}
+h1{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+p{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.flex{
+    display: flex;
+    /* nos sirve para poder tener el 100% del ancho */
+    flex-wrap: wrap;
+
+}
+.center{
+    text-align: center;
+}
+.precio{
+    font-size: 50px;
+    color: #00dac7;
+}
+.columna{
+    background-color: bisque;
+    color: black;
+    border: 1px solid ;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    /* para poder una sombra ocupamos el box show y se pondra los valores de 10px y 10px y para el degrdado de 10px*/
+    box-shadow: 10px 10px 5px #888;
+    width: 23%;
+    /* con box sizing hacemos que calcule de forma automatica el pading y el borde */
+    box-sizing: border-box;
+}
+
+.enlace{
+    background-color: orange;
+    border: 10px;
+    padding: 20px;
+    display: block;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.enlace:hover{
+    background-color: aqua;
+    color: black;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+@media (max-width: 1070px){
+    .columna{
+        width: 45%;
+        margin-bottom: 20px;
+    }  
+}
+@media (max-width: 600px){
+    .columna{
+        width: 100%;
+    }
+}
