@@ -1,63 +1,92 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario con HTML y CSS</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <h1 class="mensaje">HOLA MIRA ESTAS TABLAS</h1>
-    <h1>hola</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem deleniti, corrupti accusantium magnam labore nam a odit accusamus, harum, voluptates quasi tempora vitae voluptate iure itaque assumenda necessitatibus. Repellat, deserunt.</p>
-    <section class="container flex center">
-        <div  class="columna">
-            <h1>Plan Uno</h1>
-            <p class="precio">$500</p>
-            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem provident sit minus quasi laudantium facere inventore. Illum, veniam culpa amet nam possimus necessitatibus iure doloribus saepe, suscipit fugiat laboriosam sed.</p>
-            <hr>
-            <p >Lorem ipsum dolor </p>
-            <p >Lorem ipsum dolor sit amet consectetur </p>
-            <p >Lorem ipsum </p>
-            <hr>
-            <a href="#" class="enlace">Comprar</a>
-        </div>
+  <form>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
 
-        <div  class="columna">
-            <h1>Plan Uno</h1>
-            <p class="precio">$500</p>
-            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem provident sit minus quasi laudantium facere inventore. Illum, veniam culpa amet nam possimus necessitatibus iure doloribus saepe, suscipit fugiat laboriosam sed.</p>
-            <hr>
-            <p >Lorem ipsum dolor </p>
-            <p >Lorem ipsum dolor sit amet consectetur </p>
-            <p >Lorem ipsum </p>
-            <hr>
-            <a href="#" class="enlace">Comprar</a>
-        </div>
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" name="email" required>
 
-        <div  class="columna">
-            <h1>Plan Uno</h1>
-            <p class="precio">$500</p>
-            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem provident sit minus quasi laudantium facere inventore. Illum, veniam culpa amet nam possimus necessitatibus iure doloribus saepe, suscipit fugiat laboriosam sed.</p>
-            <hr>
-            <p >Lorem ipsum dolor </p>
-            <p >Lorem ipsum dolor sit amet consectetur </p>
-            <p >Lorem ipsum </p>
-            <hr>
-            <a href="#" class="enlace">Comprar</a>
-        </div>
+    <label for="mensaje">Mensaje:</label>
+    <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
 
-        <div  class="columna">
-            <h1>Plan Uno</h1>
-            <p class="precio">$500</p>
-            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem provident sit minus quasi laudantium facere inventore. Illum, veniam culpa amet nam possimus necessitatibus iure doloribus saepe, suscipit fugiat laboriosam sed.</p>
-            <hr>
-            <p >Lorem ipsum dolor </p>
-            <p >Lorem ipsum dolor sit amet consectetur </p>
-            <p >Lorem ipsum </p>
-            <hr>
-            <a href="#" class="enlace">Comprar</a>
-        </div>
-    </section>
+    <button type="submit">Enviar</button>
+  </form>
+
+//importar firebase
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZxtxKRrBxPlXWsIIdOKnsqFk3BiHck0E",
+      authDomain: "conexion-c3d8c.firebaseapp.com",
+      databaseURL: "https://conexion-c3d8c-default-rtdb.firebaseio.com",
+      projectId: "conexion-c3d8c",
+      storageBucket: "conexion-c3d8c.appspot.com",
+      messagingSenderId: "392171159521",
+      appId: "1:392171159521:web:67485f4d7c94d82d6e1ca0"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+
 </body>
 </html>
