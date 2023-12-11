@@ -5,123 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Comida</title>
   <style>
-  body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f2f2f2;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    h2 {
-      color: #333;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
     }
 
     form {
-      max-width: 400px;
-      margin: 20px;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #333;
+    .food-item {
+      margin-bottom: 10px;
     }
 
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button {
-      background-color: #4caf50;
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
+    .btn-add, .btn-remove {
       cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #4caf50;
-      color: #fff;
-    }
-
-    td:last-child {
-      text-align: center;
-    }
-
-    /* Estilos adicionales para hacer la tabla más atractiva */
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    tr:hover {
-      background-color: #f1f1f1;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin-top: 10px;
+      margin-right: 5px;
+      border-radius: 4px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
+  <form id="foodForm">
+    <div class="food-item">
+      <label for="foodName">Nombre de la comida:</label>
+      <input type="text" name="foodName" required>
+    </div>
 
-  <h2>Formulario de Comida</h2>
+    <div class="food-item">
+      <label for="foodDescription">Descripción:</label>
+      <textarea name="foodDescription" rows="3" required></textarea>
+    </div>
 
-  <form id="comidaForm">
-    <label for="nombre">Nombre de la Comida:</label>
-    <input type="text" id="nombre" required>
+    <div id="foodItemsContainer"></div>
 
-    <label for="descripcion">Descripción:</label>
-    <textarea id="descripcion" required></textarea>
+    <button type="button" class="btn-add" onclick="addFoodItem()">Añadir comida</button>
+    <button type="button" class="btn-remove" onclick="removeLastFoodItem()">Eliminar última comida</button>
 
-    <button type="button" onclick="agregarComida()">Agregar Comida</button>
+    <button type="submit">Guardar en Firebase</button>
   </form>
 
-  <table id="tablaComida">
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Acciones</th>
-    </tr>
-  </table>
-
-  <!-- Agrega la biblioteca de Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js"></script>
-
   <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
     // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAhYEFYHf155IVAE3WatYXK-_1wsdpllOE",
@@ -132,37 +65,59 @@
       messagingSenderId: "677572317324",
       appId: "1:677572317324:web:fb81fa7e5ab01732176ba9"
     };
-  
 
-    // Inicializa Firebase
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    const db = getFirestore(app);
 
-    // Función para agregar comida
-    function agregarComida() {
-      const nombre = document.getElementById("nombre").value;
-      const descripcion = document.getElementById("descripcion").value;
+    let foodItemsCount = 0;
 
-      // Obtén una referencia a la ubicación 'septimo' en la base de datos
-      const septimoRef = ref(database, 'septimo');
+    function addFoodItem() {
+      foodItemsCount++;
+      const foodItemsContainer = document.getElementById('foodItemsContainer');
 
-      // Agrega los datos a la base de datos
-      push(septimoRef, {
-        name: nombre,
-        description: descripcion
-      });
+      const foodItemDiv = document.createElement('div');
+      foodItemDiv.classList.add('food-item');
 
-      // Limpia el formulario después de agregar la comida
-      document.getElementById('nombre').value = '';
-      document.getElementById('descripcion').value = '';
+      const label = document.createElement('label');
+      label.textContent = `Ingrediente #${foodItemsCount}:`;
+      foodItemDiv.appendChild(label);
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = `foodIngredient${foodItemsCount}`;
+      input.required = true;
+      foodItemDiv.appendChild(input);
+
+      foodItemsContainer.appendChild(foodItemDiv);
     }
 
-    // Escucha cambios en la base de datos (puedes personalizar esto según tus necesidades)
-    onValue(ref(database, 'septimo'), (snapshot) => {
-      // Actualiza la tabla o realiza otras acciones según tus necesidades
-      // Aquí puedes obtener los datos actualizados con snapshot.val()
+    function removeLastFoodItem() {
+      const foodItemsContainer = document.getElementById('foodItemsContainer');
+      const lastChild = foodItemsContainer.lastElementChild;
+      if (lastChild) {
+        foodItemsContainer.removeChild(lastChild);
+        foodItemsCount--;
+      }
+    }
+
+    const foodForm = document.getElementById('foodForm');
+    foodForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(foodForm);
+      const foodData = {};
+
+      formData.forEach((value, key) => {
+        foodData[key] = value;
+      });
+
+      try {
+        const docRef = await addDoc(collection(db, 'comidas'), foodData);
+        console.log('Documento agregado con ID: ', docRef.id);
+      } catch (error) {
+        console.error('Error al agregar documento: ', error);
+      }
     });
   </script>
-
 </body>
 </html>
