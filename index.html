@@ -1,105 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario con HTML y CSS</title>
+  <title>Formulario de Comida</title>
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    input, select, textarea {
+    table {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
-
-    button {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    table, th, td {
+      border: 1px solid black;
     }
-
-    button:hover {
-      background-color: #0056b3;
+    th, td {
+      padding: 10px;
+      text-align: left;
     }
   </style>
 </head>
 <body>
-  <form id="crud-form">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre">
 
-    <label for="nombre">Edad:</label>
-    <input type="number" id="edad">
+  <h2>Formulario de Comida</h2>
 
-    <button type="button" onclick="crearRegistro()">Crear</button>
+  <form id="comidaForm">
+    <label for="nombre">Nombre de la Comida:</label>
+    <input type="text" id="nombre" required>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" required></textarea>
+
+    <button type="button" onclick="agregarComida()">Agregar Comida</button>
   </form>
 
-    <!-- importar firebase -->
-    <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import {getDatabase,ref,push, onValue, remove} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBZxtxKRrBxPlXWsIIdOKnsqFk3BiHck0E",
-      authDomain: "conexion-c3d8c.firebaseapp.com",
-      databaseURL: "https://conexion-c3d8c-default-rtdb.firebaseio.com",
-      projectId: "conexion-c3d8c",
-      storageBucket: "conexion-c3d8c.appspot.com",
-      messagingSenderId: "392171159521",
-      appId: "1:392171159521:web:67485f4d7c94d82d6e1ca0"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-            const database = getDatabase(app);
+  <table id="tablaComida">
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </table>
 
-            window.crearRegistro = function () {
-                const nombre = document.getElementById("nombre").value;
-                const edad = document.getElementById("edad").value;
-                console.log(nombre, edad);
-                
-                push(
-                    ref(database, 'septimo'),
-                    {
-                        name: nombre,
-                        age: edad 
-                    }
-                );
+  <script>
+    function agregarComida() {
+      var nombre = document.getElementById('nombre').value;
+      var descripcion = document.getElementById('descripcion').value;
 
-            }
-          </script>
-    </body>
+      if (nombre && descripcion) {
+        var tabla = document.getElementById('tablaComida');
+        var fila = tabla.insertRow(-1);
+
+        var celdaNombre = fila.insertCell(0);
+        var celdaDescripcion = fila.insertCell(1);
+        var celdaAcciones = fila.insertCell(2);
+
+        celdaNombre.innerHTML = nombre;
+        celdaDescripcion.innerHTML = descripcion;
+        celdaAcciones.innerHTML = '<button onclick="modificarFila(this)">Modificar</button> ' +
+                                  '<button onclick="eliminarFila(this)">Eliminar</button>';
+
+        // Limpiar el formulario después de agregar la comida
+        document.getElementById('nombre').value = '';
+        document.getElementById('descripcion').value = '';
+      } else {
+        alert('Por favor, complete todos los campos.');
+      }
+    }
+
+    function modificarFila(boton) {
+      var fila = boton.parentNode.parentNode;
+      var nombre = fila.cells[0].innerHTML;
+      var descripcion = fila.cells[1].innerHTML;
+
+      document.getElementById('nombre').value = nombre;
+      document.getElementById('descripcion').value = descripcion;
+
+      fila.parentNode.removeChild(fila);
+    }
+
+    function eliminarFila(boton) {
+      var fila = boton.parentNode.parentNode;
+      fila.parentNode.removeChild(fila);
+    }
+  </script>
+
+</body>
+</html>
+
 </html>
