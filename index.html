@@ -5,79 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Comida</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-
-    h2 {
-      color: #333;
-    }
-
-    form {
-      max-width: 400px;
-      margin: 20px auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #333;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button {
-      background-color: #4caf50;
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #4caf50;
-      color: #fff;
-    }
-
-    td:last-child {
-      text-align: center;
-    }
+    /* Estilos aquí... */
   </style>
 </head>
 <body>
@@ -102,24 +30,38 @@
     </tr>
   </table>
 
+  <!-- Agrega la biblioteca de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js"></script>
+
   <script>
+    // Configura tu proyecto de Firebase
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      databaseURL: "TU_DATABASE_URL",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
+
+    // Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
     function agregarComida() {
-      var nombre = document.getElementById('nombre').value;
-      var descripcion = document.getElementById('descripcion').value;
+      const nombre = document.getElementById('nombre').value;
+      const descripcion = document.getElementById('descripcion').value;
 
       if (nombre && descripcion) {
-        var tabla = document.getElementById('tablaComida');
-        var fila = tabla.insertRow(-1);
+        // Agrega datos a la base de datos
+        database.ref('comidas').push({
+          nombre: nombre,
+          descripcion: descripcion
+        });
 
-        var celdaNombre = fila.insertCell(0);
-        var celdaDescripcion = fila.insertCell(1);
-        var celdaAcciones = fila.insertCell(2);
-
-        celdaNombre.innerHTML = nombre;
-        celdaDescripcion.innerHTML = descripcion;
-        celdaAcciones.innerHTML = '<button onclick="modificarFila(this)">Modificar</button> ' +
-                                  '<button onclick="eliminarFila(this)">Eliminar</button>';
-        // Limpiar el formulario después de agregar la comida
+        // Limpia el formulario después de agregar la comida
         document.getElementById('nombre').value = '';
         document.getElementById('descripcion').value = '';
       } else {
@@ -127,22 +69,35 @@
       }
     }
 
-    function modificarFila(boton) {
-      var fila = boton.parentNode.parentNode;
-      var nombre = fila.cells[0].innerHTML;
-      var descripcion = fila.cells[1].innerHTML;
+    // Escucha cambios en la base de datos
+    database.ref('comidas').on('child_added', function(snapshot) {
+      const comida = snapshot.val();
+      agregarFilaTabla(comida);
+    });
 
-      document.getElementById('nombre').value = nombre;
-      document.getElementById('descripcion').value = descripcion;
+    function agregarFilaTabla(comida) {
+      const tabla = document.getElementById('tablaComida');
+      const fila = tabla.insertRow(-1);
 
-      fila.parentNode.removeChild(fila);
+      const celdaNombre = fila.insertCell(0);
+      const celdaDescripcion = fila.insertCell(1);
+      const celdaAcciones = fila.insertCell(2);
+
+      celdaNombre.textContent = comida.nombre;
+      celdaDescripcion.textContent = comida.descripcion;
+      celdaAcciones.innerHTML = '<button onclick="modificarFila(\'' + snapshot.key + '\')">Modificar</button> ' +
+                                '<button onclick="eliminarFila(\'' + snapshot.key + '\')">Eliminar</button>';
     }
 
-    function eliminarFila(boton) {
-      var fila = boton.parentNode.parentNode;
-      fila.parentNode.removeChild(fila);
+    function modificarFila(key) {
+      // Implementa la lógica para modificar la fila en la base de datos
+    }
+
+    function eliminarFila(key) {
+      // Implementa la lógica para eliminar la fila en la base de datos
     }
   </script>
 
 </body>
 </html>
+
