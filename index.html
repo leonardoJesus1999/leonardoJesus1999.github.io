@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Comida</title>
   <style>
-    body {
+  body {
       font-family: 'Arial', sans-serif;
       background-color: #f2f2f2;
       margin: 0;
@@ -111,13 +111,13 @@
       <th>Acciones</th>
     </tr>
   </table>
-  <script>
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "firebase/app";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Your web app's Firebase configuration
+  <!-- Agrega la biblioteca de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js"></script>
+
+  <script>
+    // Configura tu proyecto de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAhYEFYHf155IVAE3WatYXK-_1wsdpllOE",
       authDomain: "proyecto-9f01d.firebaseapp.com",
@@ -127,24 +127,34 @@
       appId: "1:677572317324:web:46cf020acb8647eb176ba9"
     };
 
-    // Initialize Firebase
+    // Inicializa Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    window.agregarComida = function () {
-        const nombre = document.getElementById("nombre").value;
-        const descripcion = document.getElementById("descripcion").value;
-        console.log(nombre, descripcion);
-        
-        push(
-            ref(database, 'septimo'),
-            {
-                name: nombre,
-                description: descripcion 
-            }
-        );
+    // Función para agregar comida
+    function agregarComida() {
+      const nombre = document.getElementById("nombre").value;
+      const descripcion = document.getElementById("descripcion").value;
 
+      // Obtén una referencia a la ubicación 'septimo' en la base de datos
+      const septimoRef = ref(database, 'septimo');
+
+      // Agrega los datos a la base de datos
+      push(septimoRef, {
+        name: nombre,
+        description: descripcion
+      });
+
+      // Limpia el formulario después de agregar la comida
+      document.getElementById('nombre').value = '';
+      document.getElementById('descripcion').value = '';
     }
+
+    // Escucha cambios en la base de datos (puedes personalizar esto según tus necesidades)
+    onValue(ref(database, 'septimo'), (snapshot) => {
+      // Actualiza la tabla o realiza otras acciones según tus necesidades
+      // Aquí puedes obtener los datos actualizados con snapshot.val()
+    });
   </script>
 
 </body>
