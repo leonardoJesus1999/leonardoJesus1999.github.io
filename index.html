@@ -5,17 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Comida</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
     table, th, td {
-      border: 1px solid black;
+      border: 1px solid #ddd;
     }
+
     th, td {
-      padding: 10px;
+      padding: 12px;
       text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    td:last-child {
+      text-align: center;
     }
   </style>
 </head>
@@ -58,7 +119,6 @@
         celdaDescripcion.innerHTML = descripcion;
         celdaAcciones.innerHTML = '<button onclick="modificarFila(this)">Modificar</button> ' +
                                   '<button onclick="eliminarFila(this)">Eliminar</button>';
-
         // Limpiar el formulario después de agregar la comida
         document.getElementById('nombre').value = '';
         document.getElementById('descripcion').value = '';
@@ -85,6 +145,4 @@
   </script>
 
 </body>
-</html>
-
 </html>
