@@ -111,13 +111,41 @@
       <th>Acciones</th>
     </tr>
   </table>
-
-  <!-- Agrega la biblioteca de Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js"></script>
-
   <script>
-    // Tu código JavaScript aquí...
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "firebase/app";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBNiKpMiJdGI1ohURy8rYKn3pfh3QLw-04",
+    authDomain: "trabajo-2023-fe85b.firebaseapp.com",
+    databaseURL: "https://trabajo-2023-fe85b-default-rtdb.firebaseio.com",
+    projectId: "trabajo-2023-fe85b",
+    storageBucket: "trabajo-2023-fe85b.appspot.com",
+    messagingSenderId: "147770401355",
+    appId: "1:147770401355:web:f06a07417d4a99c6dfa3ce"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    window.crearRegistro = function () {
+        const nombre = document.getElementById("nombre").value;
+        const edad = document.getElementById("descripcion").value;
+        console.log(nombre, descripcion);
+        
+        push(
+            ref(database, 'septimo'),
+            {
+                name: nombre,
+                description: descripcion 
+            }
+        );
+
+    }
   </script>
 
 </body>
