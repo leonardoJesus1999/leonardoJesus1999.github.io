@@ -1,84 +1,53 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor de Comidas</title>
-  <style>
-    /* Estilos omitidos para mayor claridad */
-  </style>
-</head>
-<body>
+<html>
+    <head>
 
-  <form id="foodForm">
-    <div class="form-group">
-      <label for="foodName">Nombre de la comida:</label>
-      <input type="text" id="foodName" name="foodName" required>
-    </div>
+    </head>
+    <body>
+        <form id="crud-form">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id = "nombre">
+            <label for="edad">Edad:</label>
+            <input type="number" id = "edad">
+            <button type="button" onclick="crearRegistro()">Crear</button>
+        </form>
 
-    <div class="form-group">
-      <label for="foodDescription">Descripción:</label>
-      <textarea id="foodDescription" name="foodDescription" rows="3" required></textarea>
-    </div>
 
-    <button type="button" onclick="addFood()">Agregar Comida</button>
-  </form>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+             // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyAhYEFYHf155IVAE3WatYXK-_1wsdpllOE",
+              authDomain: "proyecto-9f01d.firebaseapp.com",
+              databaseURL: "https://proyecto-9f01d-default-rtdb.firebaseio.com",
+              projectId: "proyecto-9f01d",
+              storageBucket: "proyecto-9f01d.appspot.com",
+              messagingSenderId: "677572317324",
+              appId: "1:677572317324:web:fb81fa7e5ab01732176ba9"
+            };
 
-  <ul id="foodList"></ul>
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+            window.crearRegistro = function () {
+                const nombre = document.getElementById("nombre").value;
+                const edad = document.getElementById("edad").value;
+                console.log(nombre, edad);
+                
+                push(
+                    ref(database, 'septimo'),
+                    {
+                        name: nombre,
+                        age: edad 
+                    }
+                );
 
-    // Configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhYEFYHf155IVAE3WatYXK-_1wsdpllOE",
-      authDomain: "proyecto-9f01d.firebaseapp.com",
-      databaseURL: "https://proyecto-9f01d-default-rtdb.firebaseio.com",
-      projectId: "proyecto-9f01d",
-      storageBucket: "proyecto-9f01d.appspot.com",
-      messagingSenderId: "677572317324",
-      appId: "1:677572317324:web:fb81fa7e5ab01732176ba9"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    let foodIdCounter = 0;
-
-    // Definir addFood en el ámbito global
-    window.addFood = function () {
-      const foodName = document.getElementById('foodName').value;
-      const foodDescription = document.getElementById('foodDescription').value;
-
-      if (foodName && foodDescription) {
-        const foodList = document.getElementById('foodList');
-
-        // Agregar a Firebase
-        const foodRef = doc(collection(db, 'comidas'), foodIdCounter.toString());
-        addDoc(foodRef, { name: foodName, description: foodDescription });
-
-        // Agregar a la lista en la interfaz
-        const foodItem = document.createElement('li');
-        foodItem.classList.add('food-item');
-        foodItem.innerHTML = `
-          <span>${foodName}: ${foodDescription}</span>
-          <button onclick="editFood(${foodIdCounter})">Editar</button>
-          <button onclick="deleteFood(${foodIdCounter})">Eliminar</button>
-        `;
-
-        foodList.appendChild(foodItem);
-
-        // Limpiar el formulario
-        document.getElementById('foodForm').reset();
-
-        foodIdCounter++;
-      } else {
-        alert('Por favor, ingresa el nombre y la descripción de la comida.');
-      }
-    }
-
-    // Resto del código omitido para mayor claridad
-  </script>
-</body>
+            }
+          </script>
+    </body>
 </html>
