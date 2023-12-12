@@ -1,72 +1,112 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Agrega la referencia al SDK de Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-database.js"></script>
-  <style>
-    /* Estilos CSS aquí */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login Page</title>
+    <!-- Agrega el enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Estilos personalizados */
+        body {
+            background-color: #2779ca;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        .login-form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-
-  <form id="food-form">
-    <label for="food-name">Nombre de la comida:</label>
-    <input type="text" id="food-name" name="food-name">
-
-    <label for="food-description">Descripción:</label>
-    <input type="text" id="food-description" name="food-description">
-
-    <div class="btn-container">
-      <button class="btn btn-create" type="button" onclick="createFood()">Crear</button>
-      <button class="btn btn-add" type="button" onclick="addFood()">Añadir</button>
-      <button class="btn btn-delete" type="button" onclick="deleteFood()">Eliminar</button>
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-12 login-form">
+                <h3 class="text-center">Formulario de Contacto</h3>
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="username">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">Apellido:</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eage">Edad:</label>
+                        <input type="number" class="form-control" id="edad" name="edad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefono:</label>
+                        <input type="number" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Ciudad:</label>
+                        <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="button" onclick="crearRegistro()" class="btn btn-primary">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </form>
 
-  <script>
-    // Configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhYEFYHf155IVAE3WatYXK-_1wsdpllOE",
-      authDomain: "proyecto-9f01d.firebaseapp.com",
-      databaseURL: "https://proyecto-9f01d-default-rtdb.firebaseio.com",
-      projectId: "proyecto-9f01d",
-      storageBucket: "proyecto-9f01d.appspot.com",
-      messagingSenderId: "677572317324",
-      appId: "1:677572317324:web:fb81fa7e5ab01732176ba9"
-    };
+    <!-- Agrega el enlace a Bootstrap JS y Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    // Inicializar Firebase
-    const app = initializeApp(firebaseConfig);
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+            import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+            apiKey: "AIzaSyAhYEFYHf155IVAE3WatYXK-_1wsdpllOE",
+            authDomain: "proyecto-9f01d.firebaseapp.com",
+            databaseURL: "https://proyecto-9f01d-default-rtdb.firebaseio.com",
+            projectId: "proyecto-9f01d",
+            storageBucket: "proyecto-9f01d.appspot.com",
+            messagingSenderId: "677572317324",
+            appId: "1:677572317324:web:fb81fa7e5ab01732176ba9"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
 
-    // Obtener referencia a la base de datos
-    const database = getDatabase(app);
+            window.crearRegistro = function () {
+                const nombre = document.getElementById("nombre").value;
+                const apellido = document.getElementById("apellido").value;
+                const edad = document.getElementById("edad").value;
+                const telefono = document.getElementById("telefono").value;
+                const ciudad = document.getElementById("ciudad").value;
+                console.log(nombre, apellido, edad, telefono, ciudad);
+                
+                push(
+                    ref(database, 'Caluña'),
+                    {
+                        name: nombre,
+                        lastname: apellido,
+                        age: edad,
+                        phone: telefono,
+                        city: ciudad
+                    }
+                );
 
-    function createFood() {
-      const foodName = document.getElementById('food-name').value;
-      const foodDescription = document.getElementById('food-description').value;
-
-      // Guardar datos en la base de datos
-      const newFoodRef = push(ref(database, 'comidas'), {
-        name: foodName,
-        description: foodDescription
-      });
-
-      console.log("Comida creada con ID:", newFoodRef.key);
-    }
-
-    function addFood() {
-      // Lógica para añadir comida
-      console.log("Comida añadida");
-    }
-
-    function deleteFood() {
-      // Lógica para eliminar comida
-      console.log("Comida eliminada");
-    }
-  </script>
-
-</body>
+            }
+          </script>
+    </body>
 </html>
